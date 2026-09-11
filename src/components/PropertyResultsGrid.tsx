@@ -9,6 +9,7 @@ interface PropertyResultsGridProps {
   className?: string;
   totalProperties?: number;
   columns?: 2 | 3;
+  onSelectProperty?: (property: NigerianProperty) => void;
 }
 
 const SORT_OPTIONS = [
@@ -23,6 +24,7 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
   className = '',
   totalProperties = 150,
   columns = 2,
+  onSelectProperty,
 }) => {
   const [savedPropertyIds, setSavedPropertyIds] = useState<string[]>([]);
   const [selectedSort, setSelectedSort] = useState('Newest First');
@@ -140,7 +142,13 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
             <motion.div
               key={`${property.id}-${index}`}
               id={`property-item-${property.id}`}
-              onClick={() => setSelectedProperty(property)}
+              onClick={() => {
+                if (onSelectProperty) {
+                  onSelectProperty(property);
+                } else {
+                  setSelectedProperty(property);
+                }
+              }}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}

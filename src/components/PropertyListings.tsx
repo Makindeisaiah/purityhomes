@@ -15,6 +15,7 @@ interface PropertyListingsProps {
   onResetFilters?: () => void;
   onNavigateToPropertyPage?: () => void;
   isPropertyPage?: boolean;
+  onSelectProperty?: (property: NigerianProperty) => void;
 }
 
 export const PropertyListings: React.FC<PropertyListingsProps> = ({
@@ -25,6 +26,7 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
   onResetFilters,
   onNavigateToPropertyPage,
   isPropertyPage = false,
+  onSelectProperty,
 }) => {
   const [selectedPropertyForModal, setSelectedPropertyForModal] = useState<NigerianProperty | null>(null);
 
@@ -60,7 +62,13 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
         <motion.div
           key={property.id}
           id={`property-card-${property.id}`}
-          onClick={() => setSelectedPropertyForModal(property)}
+          onClick={() => {
+            if (onSelectProperty) {
+              onSelectProperty(property);
+            } else {
+              setSelectedPropertyForModal(property);
+            }
+          }}
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
@@ -127,7 +135,7 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
 
             {/* Listings Grid Column */}
             <div className="flex-1 w-full min-w-0">
-              <PropertyResultsGrid totalProperties={150} />
+              <PropertyResultsGrid totalProperties={150} onSelectProperty={onSelectProperty} />
             </div>
           </div>
         ) : (

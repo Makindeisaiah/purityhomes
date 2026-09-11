@@ -10,10 +10,13 @@ import { Testimonials } from './components/Testimonials';
 import { HowItWorksPage } from './components/HowItWorksPage';
 import { ContactPage } from './components/ContactPage';
 import { AboutPage } from './components/AboutPage';
+import { PropertyDetailPage } from './components/PropertyDetailPage';
 import { Footer } from './components/Footer';
+import { NigerianProperty } from './types';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('HOME');
+  const [selectedProperty, setSelectedProperty] = useState<NigerianProperty | null>(null);
   const [propertyFilters, setPropertyFilters] = useState<PropertySearchParams>({
     query: '',
     type: '',
@@ -43,11 +46,17 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSelectProperty = (property: NigerianProperty) => {
+    setSelectedProperty(property);
+    setActiveTab('PROPERTY_DETAIL');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-white text-neutral-900 flex flex-col selection:bg-[#4cb882]/20 selection:text-[#2d7752]">
       {/* Header with Logo, Navigation Links, Search & Profile */}
       <Navbar
-        activeTab={activeTab}
+        activeTab={activeTab === 'PROPERTY_DETAIL' ? 'PROPERTY' : activeTab}
         onSelectTab={handleTabSelect}
         onHeaderSearch={(query) => {
           setPropertyFilters({
@@ -63,7 +72,14 @@ export default function App() {
 
       {/* Main Content View Switcher */}
       <main className="flex-1 flex flex-col justify-start">
-        {activeTab === 'PROPERTY' ? (
+        {activeTab === 'PROPERTY_DETAIL' && selectedProperty ? (
+          /* Dedicated Property Detail Page View */
+          <PropertyDetailPage
+            property={selectedProperty}
+            onBack={() => handleTabSelect('PROPERTY')}
+            onSelectProperty={handleSelectProperty}
+          />
+        ) : activeTab === 'PROPERTY' ? (
           /* Dedicated Property Listings Page View */
           <div className="flex flex-col">
             <PropertyHero
@@ -76,6 +92,7 @@ export default function App() {
               selectedType={propertyFilters.type}
               minPrice={propertyFilters.minPrice}
               maxPrice={propertyFilters.maxPrice}
+              onSelectProperty={handleSelectProperty}
               onResetFilters={() =>
                 setPropertyFilters({
                   query: '',
@@ -112,6 +129,7 @@ export default function App() {
             <PropertyListings
               isPropertyPage={false}
               onNavigateToPropertyPage={() => handleTabSelect('PROPERTY')}
+              onSelectProperty={handleSelectProperty}
             />
             <InteriorShowcase />
             <Testimonials />
