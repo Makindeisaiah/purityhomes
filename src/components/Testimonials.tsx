@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ArrowLeft, ArrowRight, Quote, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Testimonial {
   id: string;
@@ -8,6 +8,7 @@ interface Testimonial {
   role: string;
   avatar: string;
   text: string;
+  rating?: number;
 }
 
 export const Testimonials: React.FC = () => {
@@ -18,6 +19,7 @@ export const Testimonials: React.FC = () => {
       role: 'Tenant in Lekki Phase 1',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80',
       text: 'Renting in Lagos used to be stressful with middleman agent fees. Purity Homes verified the landlord, handled the tenancy contract cleanly, and the guaranteed 24/7 power in Lekki Phase 1 has been 100% reliable for my remote tech job.',
+      rating: 5,
     },
     {
       id: 'fatima-aliyu',
@@ -25,6 +27,7 @@ export const Testimonials: React.FC = () => {
       role: 'Tenant in Maitama, Abuja',
       avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80',
       text: 'Relocating to Abuja was seamless thanks to Purity Homes. The video walkthrough matched the property in Maitama down to the kitchen finishes. Honest service charge breakdown with no hidden surprises.',
+      rating: 5,
     },
     {
       id: 'babatunde-johnson',
@@ -32,6 +35,7 @@ export const Testimonials: React.FC = () => {
       role: 'Tenant in Victoria Island',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80',
       text: 'Secured a 2-bedroom serviced flat within 48 hours of physical inspection. The digital receipt, caution fee escrow protection, and prompt key collection made this the best rental experience I have had in Lagos.',
+      rating: 5,
     },
     {
       id: 'grace-danladi',
@@ -39,6 +43,7 @@ export const Testimonials: React.FC = () => {
       role: 'Tenant in Ikeja GRA',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80',
       text: 'The transparency and responsiveness from Purity Homes made all the difference. Every detail was handled with precision and care, making the moving-in process seamless and effortless.',
+      rating: 5,
     },
     {
       id: 'david-okeke',
@@ -46,20 +51,36 @@ export const Testimonials: React.FC = () => {
       role: 'Tenant in Banana Island',
       avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&h=150&q=80',
       text: 'Finding a contemporary penthouse residence with dedicated gym and backup generator in our price bracket was smooth. Exceptional team and service in Nigeria!',
+      rating: 5,
     },
   ];
 
-  const [activeIndex, setActiveIndex] = useState(1); // 1 = John Chris (middle highlight)
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
+    setDirection(-1);
     setActiveIndex((prev) => (prev > 0 ? prev - 1 : testimonials.length - 1));
-  };
+  }, [testimonials.length]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
+    setDirection(1);
     setActiveIndex((prev) => (prev < testimonials.length - 1 ? prev + 1 : 0));
-  };
+  }, [testimonials.length]);
 
-  // Compute 3 items relative to active index
+  // Automatic slide every 4.5 seconds
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      handleNext();
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [handleNext, isPaused]);
+
+  // Compute 3 items relative to active index for desktop
   const getVisibleTestimonials = () => {
     const total = testimonials.length;
     const prevIdx = (activeIndex - 1 + total) % total;
@@ -73,9 +94,26 @@ export const Testimonials: React.FC = () => {
   };
 
   const visibleItems = getVisibleTestimonials();
+  const currentMobileTestimonial = testimonials[activeIndex];
+
+  // Variants for smooth slide in/out
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 100 : -100,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -100 : 100,
+      opacity: 0,
+    }),
+  };
 
   return (
-    <section id="about" className="w-full bg-white pb-20 sm:pb-24 lg:pb-28">
+    <section id="about" className="w-full bg-white pb-20 sm:pb-24 lg:pb-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         {/* Header: Centered Two-Line Heading with Mixed Green Spans */}
         <motion.div
@@ -83,7 +121,7 @@ export const Testimonials: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="text-center max-w-4xl mx-auto mb-12 sm:mb-16"
+          className="text-center max-w-4xl mx-auto mb-10 sm:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold text-neutral-950 leading-[1.18] tracking-[-0.02em] font-['Plus_Jakarta_Sans',sans-serif]">
             <span>See What Verified </span>
@@ -94,8 +132,113 @@ export const Testimonials: React.FC = () => {
           </h2>
         </motion.div>
 
-        {/* Testimonials 3-Column Grid with Staggered Fade + Slide-up from below & Hover Lift */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        {/* MOBILE VIEW: Exactly ONE Card with Auto-Slide & Touch Drag (< md) */}
+        <div
+          className="block md:hidden relative max-w-md mx-auto"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
+          <div className="relative min-h-[300px] flex items-center">
+            <AnimatePresence initial={false} custom={direction} mode="wait">
+              <motion.div
+                key={currentMobileTestimonial.id}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: 'spring', stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.25 },
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(_e, { offset, velocity }) => {
+                  const swipe = Math.abs(offset.x) * velocity.x;
+                  if (offset.x < -60 || swipe < -100) {
+                    handleNext();
+                  } else if (offset.x > 60 || swipe > 100) {
+                    handlePrev();
+                  }
+                }}
+                className="w-full bg-[#4cb882] text-white rounded-3xl p-6 sm:p-7 shadow-xl shadow-[#4cb882]/20 flex flex-col justify-between cursor-grab active:cursor-grabbing border border-[#4cb882]/30"
+              >
+                <div>
+                  {/* Top Row: Circular Avatar + Name, Role, and Star Rating */}
+                  <div className="flex items-center justify-between gap-3 mb-5">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-13 h-13 rounded-full overflow-hidden shrink-0 border-2 border-white/80 shadow-xs bg-neutral-200">
+                        <img
+                          src={currentMobileTestimonial.avatar}
+                          alt={currentMobileTestimonial.name}
+                          className="w-full h-full object-cover object-center"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-lg font-bold leading-tight text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                          {currentMobileTestimonial.name}
+                        </span>
+                        <span className="text-xs font-medium text-white/85 mt-0.5">
+                          {currentMobileTestimonial.role}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                      <Quote className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
+
+                  {/* Rating Stars */}
+                  <div className="flex items-center gap-1 mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
+                    ))}
+                  </div>
+
+                  {/* Testimonial Text */}
+                  <p className="text-sm leading-relaxed font-normal text-white/95">
+                    “{currentMobileTestimonial.text}”
+                  </p>
+                </div>
+
+                {/* Subtitle / swipe hint */}
+                <div className="pt-4 mt-4 border-t border-white/20 flex items-center justify-between text-[11px] text-white/75 font-medium">
+                  <span>Verified Tenant</span>
+                  <span>Swipe to browse</span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Indicator Dots for Mobile */}
+          <div className="flex items-center justify-center gap-2 mt-5">
+            {testimonials.map((t, idx) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => {
+                  setDirection(idx > activeIndex ? 1 : -1);
+                  setActiveIndex(idx);
+                }}
+                aria-label={`Go to testimonial ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeIndex === idx ? 'w-6 bg-[#4cb882]' : 'w-2 bg-neutral-300 hover:bg-neutral-400'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW: 3-Column Highlight Grid (>= md) */}
+        <div
+          className="hidden md:grid md:grid-cols-3 gap-6 sm:gap-8 items-stretch"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           {visibleItems.map(({ item, position }, idx) => {
             const isHighlighted = position === 'middle';
 
@@ -112,7 +255,7 @@ export const Testimonials: React.FC = () => {
                   ease: 'easeOut',
                 }}
                 whileHover={{ y: -6 }}
-                className={`rounded-[1.75rem] p-7 sm:p-8 lg:p-9 flex flex-col justify-between transition-colors duration-300 ${
+                className={`rounded-[1.75rem] p-7 sm:p-8 lg:p-9 flex flex-col justify-between transition-all duration-300 ${
                   isHighlighted
                     ? 'bg-[#4cb882] text-white shadow-lg shadow-[#4cb882]/20 md:scale-[1.02]'
                     : 'bg-[#d2d5db]/70 text-neutral-800'
@@ -162,7 +305,7 @@ export const Testimonials: React.FC = () => {
         </div>
 
         {/* Navigation: Centered Arrow Circle Buttons */}
-        <div className="mt-12 sm:mt-14 flex items-center justify-center gap-3">
+        <div className="mt-8 sm:mt-12 md:mt-14 flex items-center justify-center gap-3">
           <button
             id="btn-testimonials-prev"
             type="button"
