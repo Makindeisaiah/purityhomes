@@ -8,6 +8,7 @@ import { PropertyDetailModal } from './PropertyDetailModal';
 interface PropertyResultsGridProps {
   className?: string;
   totalProperties?: number;
+  columns?: 2 | 3;
 }
 
 const SORT_OPTIONS = [
@@ -21,6 +22,7 @@ const SORT_OPTIONS = [
 export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
   className = '',
   totalProperties = 150,
+  columns = 2,
 }) => {
   const [savedPropertyIds, setSavedPropertyIds] = useState<string[]>([]);
   const [selectedSort, setSelectedSort] = useState('Newest First');
@@ -66,7 +68,7 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
         className="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8"
       >
         <p className="text-sm sm:text-base font-semibold text-neutral-700 font-['Plus_Jakarta_Sans',sans-serif]">
-          Showing 1-9 of {totalProperties}+ verified Nigerian rentals
+          Showing 1-8 of {totalProperties}+ verified Nigerian rentals
         </p>
 
         {/* Sort By Dropdown */}
@@ -125,8 +127,12 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
         </div>
       </motion.div>
 
-      {/* 2. 3-Column Property Card Grid (Responsive to 2 cols on tablet / 1 col on mobile) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
+      {/* 2. Property Card Grid - 2 in a row on Property Page */}
+      <div
+        className={`grid grid-cols-1 ${
+          columns === 2 ? 'sm:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'
+        } gap-6 sm:gap-7`}
+      >
         {sortedProperties.map((property, index) => {
           const isSaved = savedPropertyIds.includes(property.id);
 
@@ -146,8 +152,8 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
               whileHover={{ y: -5 }}
               className="bg-white rounded-2xl sm:rounded-[1.35rem] border border-neutral-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-lg hover:border-[#5dbd8c]/40 transition-all duration-200 flex flex-col group cursor-pointer"
             >
-              {/* Photo Container */}
-              <div className="relative w-full aspect-[16/11] sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-neutral-100 mb-3.5">
+              {/* Photo Container with balanced 16:10 aspect ratio */}
+              <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-neutral-100 mb-3.5">
                 <motion.img
                   src={property.image}
                   alt={property.name}
