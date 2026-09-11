@@ -85,10 +85,6 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="lg:col-span-7 flex flex-col justify-center"
           >
-            <div className="inline-flex items-center gap-2 bg-[#4cb882]/10 border border-[#4cb882]/25 text-[#2d7752] text-xs font-bold px-3.5 py-1.5 rounded-full w-fit mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#4cb882] animate-pulse" />
-              <span>Nigeria's Premier Apartment & Home Rental Platform</span>
-            </div>
             <h1 className="text-3xl sm:text-5xl md:text-[54px] lg:text-[58px] xl:text-[64px] font-extrabold leading-[1.12] tracking-[-0.03em] text-neutral-950 font-['Plus_Jakarta_Sans',sans-serif]">
               <span className="text-[#4cb882]">Find The </span>
               <span>Most</span>
