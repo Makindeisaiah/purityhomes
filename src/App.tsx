@@ -7,6 +7,9 @@ import { MapSection } from './components/MapSection';
 import { PropertyListings } from './components/PropertyListings';
 import { InteriorShowcase } from './components/InteriorShowcase';
 import { Testimonials } from './components/Testimonials';
+import { HowItWorksPage } from './components/HowItWorksPage';
+import { ContactPage } from './components/ContactPage';
+import { AboutPage } from './components/AboutPage';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -37,18 +40,7 @@ export default function App() {
 
   const handleTabSelect = (tab: string) => {
     setActiveTab(tab);
-    if (tab === 'HOME' || tab === 'PROPERTY') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (tab === 'PRODUCT') {
-      const el = document.getElementById('product');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === 'ABOUT US') {
-      const el = document.getElementById('about');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    } else if (tab === 'CONTACT') {
-      const el = document.getElementById('contact');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -69,7 +61,7 @@ export default function App() {
         }}
       />
 
-      {/* Main Content */}
+      {/* Main Content View Switcher */}
       <main className="flex-1 flex flex-col justify-start">
         {activeTab === 'PROPERTY' ? (
           /* Dedicated Property Listings Page View */
@@ -98,8 +90,21 @@ export default function App() {
               }}
             />
           </div>
+        ) : activeTab === 'HOW IT WORKS' ? (
+          /* How It Works Page View */
+          <HowItWorksPage
+            onNavigateToProperties={() => handleTabSelect('PROPERTY')}
+          />
+        ) : activeTab === 'CONTACT' ? (
+          /* Contact Us Page View */
+          <ContactPage />
+        ) : activeTab === 'ABOUT US' ? (
+          /* About Us Page View */
+          <AboutPage
+            onNavigateToProperties={() => handleTabSelect('PROPERTY')}
+          />
         ) : (
-          /* Main Landing Page View */
+          /* Main Landing Page View (HOME) */
           <div className="flex flex-col">
             <Hero onSearch={handleHomeSearch} />
             <StatsBanner />
