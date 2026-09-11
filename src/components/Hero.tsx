@@ -30,31 +30,35 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
   }, []);
 
   const locationOptions = [
-    'Miami Beach, FL',
-    'Beverly Hills, CA',
-    'Austin, TX',
-    'Malibu, CA',
-    'Aspen, CO',
-    'Manhattan, NY',
-    'Seattle, WA',
+    'Lekki Phase 1, Lagos',
+    'Ikoyi, Lagos',
+    'Victoria Island (VI), Lagos',
+    'Ikeja GRA, Lagos',
+    'Banana Island, Lagos',
+    'Maitama, Abuja (FCT)',
+    'Wuse 2, Abuja (FCT)',
+    'Jabi Lake, Abuja (FCT)',
+    'Peter Odili, Port Harcourt',
+    'Old Bodija, Ibadan',
   ];
 
   const typeOptions = [
-    'Modern Villa',
-    'Beachfront House',
-    'Luxury Penthouse',
-    'Contemporary Mansion',
-    'Townhouse',
-    'Duplex Residence',
+    'Serviced Apartment',
+    'Mini Flat / 1-Bedroom',
+    '2-Bedroom Flat',
+    '3-Bedroom Luxury Flat',
+    '4-Bedroom Terrace Duplex',
+    '5-Bedroom Detached Mansion',
+    'Waterfront Penthouse',
   ];
 
   const budgetOptions = [
-    '$150,000 - $350,000',
-    '$350,000 - $750,000',
-    '$500,000 - $1,200,000',
-    '$1,200,000 - $2,500,000',
-    '$2,500,000 - $5,000,000',
-    '$5,000,000+',
+    '₦1,500,000 - ₦3,500,000 / yr',
+    '₦3,500,000 - ₦7,500,000 / yr',
+    '₦7,500,000 - ₦15,000,000 / yr',
+    '₦15,000,000 - ₦30,000,000 / yr',
+    '₦30,000,000 - ₦60,000,000 / yr',
+    '₦60,000,000+ / yr',
   ];
 
   const handleSeeProperty = () => {
@@ -81,6 +85,10 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="lg:col-span-7 flex flex-col justify-center"
           >
+            <div className="inline-flex items-center gap-2 bg-[#4cb882]/10 border border-[#4cb882]/25 text-[#2d7752] text-xs font-bold px-3.5 py-1.5 rounded-full w-fit mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#4cb882] animate-pulse" />
+              <span>Nigeria's Premier Apartment & Home Rental Platform</span>
+            </div>
             <h1 className="text-3xl sm:text-5xl md:text-[54px] lg:text-[58px] xl:text-[64px] font-extrabold leading-[1.12] tracking-[-0.03em] text-neutral-950 font-['Plus_Jakarta_Sans',sans-serif]">
               <span className="text-[#4cb882]">Find The </span>
               <span>Most</span>
@@ -90,6 +98,9 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
               <span>For You </span>
               <span className="text-[#4cb882]">To Live In</span>
             </h1>
+            <p className="mt-4 text-sm sm:text-base text-neutral-600 font-medium max-w-lg leading-relaxed">
+              Explore verified serviced apartments, mini flats, and luxury duplexes across Lagos, Abuja, Port Harcourt, and Ibadan.
+            </p>
           </motion.div>
 
           {/* Right Column: Hero House Image with Emerald Rounded Frame (Fade + slide-up on load) */}

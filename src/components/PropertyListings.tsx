@@ -1,17 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Bed, Bath, Maximize, MapPin, Sparkles } from 'lucide-react';
 import { PropertyFilterSidebar } from './PropertyFilterSidebar';
 import { PropertyResultsGrid } from './PropertyResultsGrid';
-
-export interface PropertyItem {
-  id: string;
-  name: string;
-  address: string;
-  price: string;
-  type?: string;
-  priceNum?: number;
-  image: string;
-}
+import { PropertyDetailModal } from './PropertyDetailModal';
+import { NIGERIAN_PROPERTIES } from '../data/nigerianProperties';
+import { NigerianProperty } from '../types';
 
 interface PropertyListingsProps {
   searchQuery?: string;
@@ -32,68 +26,17 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
   onNavigateToPropertyPage,
   isPropertyPage = false,
 }) => {
-  const allProperties: PropertyItem[] = [
-    {
-      id: 'alexandria-house',
-      name: 'Alexandria House',
-      address: '22037 Fig Tree Ln, Chatsworth, CA 91311',
-      price: '$450,000',
-      type: 'Modern Villa',
-      priceNum: 450000,
-      image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'lorenzo-apartment',
-      name: 'Lorenzo Apartment',
-      address: '8250 Lankershim, North Hollywood, CA 91605',
-      price: '$550,000',
-      type: 'Luxury Apartment',
-      priceNum: 550000,
-      image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'golden-spring-villa',
-      name: 'Golden Spring Villa',
-      address: '7401 Costello Ave, Van Nuys, CA 91405',
-      price: '$500,000',
-      type: 'Modern Villa',
-      priceNum: 500000,
-      image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'tossi-mansion',
-      name: 'Tossi Mansion',
-      address: '2046 Thomas St, Los Angeles, CA 90031',
-      price: '$650,600',
-      type: 'Waterfront Mansion',
-      priceNum: 650600,
-      image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'kellystone-villa',
-      name: 'Kellystone Villa',
-      address: '1300 Linda Flora Dr, Los Angeles, CA 90049',
-      price: '$700,000',
-      type: 'Penthouse Suite',
-      priceNum: 700000,
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'convent-hill',
-      name: 'Convent Hill',
-      address: '5606 Park Oak Pl, Los Angeles, CA 90068',
-      price: '$520,000',
-      type: 'Townhouse',
-      priceNum: 520000,
-      image: 'https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=900&q=80',
-    },
-  ];
+  const [selectedPropertyForModal, setSelectedPropertyForModal] = useState<NigerianProperty | null>(null);
 
   // Filter properties based on props
-  const properties = allProperties.filter((item) => {
+  const properties = NIGERIAN_PROPERTIES.filter((item) => {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      const matches = item.name.toLowerCase().includes(q) || item.address.toLowerCase().includes(q);
+      const matches =
+        item.name.toLowerCase().includes(q) ||
+        item.address.toLowerCase().includes(q) ||
+        item.neighborhood.toLowerCase().includes(q) ||
+        item.city.toLowerCase().includes(q);
       if (!matches) return false;
     }
     if (selectedType && selectedType !== 'All Types' && selectedType !== 'Select Type') {
@@ -113,10 +56,11 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
         isTwoColumns ? 'lg:grid-cols-2 xl:grid-cols-2 gap-6 sm:gap-8' : 'lg:grid-cols-3 gap-8 sm:gap-10'
       }`}
     >
-      {properties.map((property, index) => (
+      {properties.slice(0, 6).map((property, index) => (
         <motion.div
           key={property.id}
           id={`property-card-${property.id}`}
+          onClick={() => setSelectedPropertyForModal(property)}
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
@@ -125,32 +69,45 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
             delay: index * 0.1,
             ease: 'easeOut',
           }}
-          whileHover={{ y: -4 }}
-          className="group flex flex-col cursor-pointer"
+          whileHover={{ y: -6 }}
+          className="group flex flex-col cursor-pointer bg-white rounded-2xl sm:rounded-[1.4rem] border border-neutral-200/80 p-3 sm:p-3.5 shadow-sm hover:shadow-md transition-all duration-200"
         >
           {/* Card Image Container with price badge overlaid */}
-          <div className="relative w-full aspect-[4/3] rounded-2xl sm:rounded-[1.35rem] overflow-hidden bg-neutral-100 shadow-sm">
+          <div className="relative w-full aspect-[4/3] rounded-xl sm:rounded-[1.15rem] overflow-hidden bg-neutral-100 shadow-xs">
             <img
               src={property.image}
               alt={property.name}
               className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
               referrerPolicy="no-referrer"
             />
+
+            {/* Status Badge top-left */}
+            <div className="absolute top-3 left-3 bg-[#4cb882] text-white font-bold text-xs px-2.5 py-1 rounded-md shadow-sm">
+              {property.status || 'Serviced'}
+            </div>
             
-            {/* Price Badge on bottom-right of the image */}
-            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-[#4cb882] text-white font-bold text-sm sm:text-[15px] px-3.5 sm:px-4 py-1.5 rounded-lg sm:rounded-xl shadow-md tracking-tight">
-              {property.price}
+            {/* Price Badge on bottom-right of the image in Naira */}
+            <div className="absolute bottom-3 right-3 sm:bottom-3.5 sm:right-3.5 bg-neutral-950/85 backdrop-blur-xs text-[#5dbd8c] font-black text-sm sm:text-[15px] px-3.5 py-1.5 rounded-lg sm:rounded-xl shadow-md tracking-tight border border-white/15">
+              {property.priceFormatted}
             </div>
           </div>
 
           {/* Card Information: Name in green, Address underneath */}
-          <div className="mt-4 flex flex-col space-y-1">
-            <h3 className="text-lg sm:text-xl font-bold text-[#4cb882] group-hover:text-[#3fa06f] transition-colors leading-snug">
+          <div className="mt-3.5 flex flex-col space-y-1">
+            <h3 className="text-base sm:text-lg font-bold text-neutral-950 group-hover:text-[#4cb882] transition-colors leading-snug line-clamp-1">
               {property.name}
             </h3>
-            <p className="text-xs sm:text-sm font-medium text-neutral-800 leading-relaxed">
-              {property.address}
-            </p>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-500">
+              <MapPin className="w-3.5 h-3.5 text-[#4cb882] shrink-0" />
+              <span className="line-clamp-1">{property.address}</span>
+            </div>
+
+            {/* Specs row */}
+            <div className="pt-2.5 mt-1 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-600 font-medium">
+              <span className="flex items-center gap-1"><Bed className="w-3.5 h-3.5 text-neutral-400" /> {property.beds} Beds</span>
+              <span className="flex items-center gap-1"><Bath className="w-3.5 h-3.5 text-neutral-400" /> {property.baths} Baths</span>
+              <span className="flex items-center gap-1"><Maximize className="w-3.5 h-3.5 text-neutral-400" /> {property.sqft} sqft</span>
+            </div>
           </div>
         </motion.div>
       ))}
@@ -188,10 +145,10 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
                   <span>All The </span>
                   <span className="text-[#4cb882]">Best Residences</span>
                   <br />
-                  <span>From Us For You</span>
+                  <span>To Rent in Nigeria</span>
                 </h2>
                 <p className="mt-3 sm:mt-4 text-sm sm:text-base font-medium text-neutral-500">
-                  We Have Developed A Total Of 10,500+ Properties
+                  Curated & Verified Apartments Across Lagos, Abuja & Port Harcourt
                 </p>
               </div>
 
@@ -212,7 +169,7 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
                   onClick={onNavigateToPropertyPage}
                   className="bg-[#4cb882] hover:bg-[#3fa06f] active:scale-[0.98] text-white font-semibold text-sm sm:text-[15px] px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-150 shadow-sm cursor-pointer whitespace-nowrap"
                 >
-                  Let’s See Our Property
+                  Explore All Nigerian Rentals
                 </button>
               </div>
             </motion.div>
@@ -220,7 +177,7 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
             {/* Empty state if filters match nothing */}
             {properties.length === 0 && (
               <div className="text-center py-16 px-4 bg-neutral-50 rounded-3xl border border-neutral-200/80 my-6">
-                <p className="text-lg font-bold text-neutral-800">No properties found matching your search</p>
+                <p className="text-lg font-bold text-neutral-800">No rental apartments found matching your search</p>
                 <p className="text-sm text-neutral-500 mt-1">Try clearing or adjusting your search filters above.</p>
                 <button
                   type="button"
@@ -235,6 +192,13 @@ export const PropertyListings: React.FC<PropertyListingsProps> = ({
             {renderCards(false)}
           </div>
         )}
+
+        {/* Interactive Property Detail Modal */}
+        <PropertyDetailModal
+          property={selectedPropertyForModal}
+          isOpen={!!selectedPropertyForModal}
+          onClose={() => setSelectedPropertyForModal(null)}
+        />
       </div>
     </section>
   );

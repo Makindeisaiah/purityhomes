@@ -19,27 +19,32 @@ export interface PropertyFilterSidebarProps {
 
 const DEFAULT_FILTERS: FilterState = {
   location: 'Select location',
-  propertyTypes: ['Villa', 'Condo', 'Townhouse'],
-  priceRange: 750000,
-  bedrooms: ['3 Bedroom', '4 Bedroom', '5 Bedroom'],
-  bathrooms: ['3 Bathroom', '4 Bathroom', '5 Bathroom'],
+  propertyTypes: ['Serviced Flat', 'Terrace Duplex', 'Penthouse'],
+  priceRange: 15000000,
+  bedrooms: ['2 Bedroom', '3 Bedroom', '4 Bedroom'],
+  bathrooms: ['2 Bathroom', '3 Bathroom', '4 Bathroom'],
 };
 
 const LOCATIONS = [
   'Select location',
-  'Miami Beach, FL',
-  'Beverly Hills, CA',
-  'Austin, TX',
-  'Los Angeles, CA',
-  'New York, NY',
+  'Lekki Phase 1, Lagos',
+  'Ikoyi, Lagos',
+  'Victoria Island (VI), Lagos',
+  'Ikeja GRA, Lagos',
+  'Banana Island, Lagos',
+  'Maitama, Abuja (FCT)',
+  'Wuse 2, Abuja (FCT)',
+  'Jabi Lake, Abuja (FCT)',
+  'Peter Odili, Port Harcourt',
+  'Old Bodija, Ibadan',
 ];
 
 const PROPERTY_TYPES = [
-  { label: 'House', count: 74 },
-  { label: 'Apartment', count: 56 },
-  { label: 'Villa', count: 38 },
-  { label: 'Condo', count: 22 },
-  { label: 'Townhouse', count: 18 },
+  { label: 'Serviced Flat', count: 85 },
+  { label: 'Mini Flat / 1-Bed', count: 62 },
+  { label: 'Terrace Duplex', count: 44 },
+  { label: 'Detached Mansion', count: 28 },
+  { label: 'Penthouse', count: 19 },
 ];
 
 const BEDROOM_OPTIONS = [
@@ -120,7 +125,7 @@ export const PropertyFilterSidebar: React.FC<PropertyFilterSidebarProps> = ({
     setIsMobileDrawerOpen(false);
   };
 
-  const formattedCurrentPrice = `$${Number(filters.priceRange).toLocaleString()}`;
+  const formattedCurrentPrice = `₦${Number(filters.priceRange).toLocaleString()}/yr`;
 
   // Filter content component reused in both desktop sidebar & mobile drawer
   const FilterContent = (
@@ -251,9 +256,9 @@ export const PropertyFilterSidebar: React.FC<PropertyFilterSidebarProps> = ({
         <div className="pt-1">
           <input
             type="range"
-            min="100000"
-            max="1000000"
-            step="25000"
+            min="1500000"
+            max="60000000"
+            step="500000"
             value={filters.priceRange}
             onChange={(e) =>
               setFilters((prev) => ({
@@ -264,8 +269,8 @@ export const PropertyFilterSidebar: React.FC<PropertyFilterSidebarProps> = ({
             className="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-[#5dbd8c]"
           />
           <div className="flex items-center justify-between text-xs font-medium text-neutral-500 mt-2">
-            <span>$100,000</span>
-            <span>$1,000,000+</span>
+            <span>₦1.5M/yr</span>
+            <span>₦60M+/yr</span>
           </div>
         </div>
       </div>

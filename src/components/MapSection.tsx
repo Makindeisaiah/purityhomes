@@ -24,32 +24,39 @@ export const MapSection: React.FC = () => {
               transition={{ duration: 0.75, ease: 'easeOut' }}
               className="lg:col-span-6 flex flex-col justify-center space-y-6 sm:space-y-8"
             >
+              <div className="inline-flex items-center gap-2 bg-[#4cb882]/20 border border-[#4cb882]/40 text-[#5dbd8c] text-xs font-bold px-3 py-1 rounded-full w-fit">
+                <span className="w-2 h-2 rounded-full bg-[#4cb882] animate-pulse" />
+                <span>Lagos & Abuja Interactive Rental Directory</span>
+              </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-extrabold text-white leading-[1.15] tracking-[-0.02em] font-['Plus_Jakarta_Sans',sans-serif]">
                 Find The Most
                 <br />
                 Comfortable Residence
                 <br />
-                Near You Now
+                Near You in Nigeria
               </h2>
+              <p className="text-sm text-neutral-300 font-medium max-w-md">
+                Fast-track your apartment search across Lekki, Ikoyi, Victoria Island, Ikeja GRA, and Maitama Abuja with direct landlord contacts.
+              </p>
 
               {/* Action Buttons Side by Side */}
               <div className="flex flex-wrap items-center gap-3.5 sm:gap-4 pt-1">
                 {/* Solid Green Button */}
                 <button
-                  id="btn-nearest-residence"
+                  id="btn-lagos-rentals"
                   type="button"
                   className="bg-[#4cb882] hover:bg-[#3fa06f] active:scale-[0.98] text-white font-semibold text-sm sm:text-[15px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-full transition-all duration-150 shadow-sm cursor-pointer whitespace-nowrap"
                 >
-                  Nearest Residence
+                  Explore Lagos Flats
                 </button>
 
                 {/* Outline Green Button */}
                 <button
-                  id="btn-view-property"
+                  id="btn-abuja-rentals"
                   type="button"
                   className="border-[1.5px] border-[#4cb882] hover:bg-[#4cb882]/10 active:scale-[0.98] text-white font-semibold text-sm sm:text-[15px] px-6 sm:px-8 py-3 sm:py-3.5 rounded-full transition-all duration-150 cursor-pointer whitespace-nowrap"
                 >
-                  View Property
+                  Explore Abuja Flats
                 </button>
               </div>
             </motion.div>
@@ -72,7 +79,7 @@ export const MapSection: React.FC = () => {
                 {/* Visual map UI badge accent */}
                 <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-neutral-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-[#4cb882] animate-pulse" />
-                  <span>Los Angeles & Vicinity</span>
+                  <span>Lagos & Abuja Metros</span>
                 </div>
               </div>
             </motion.div>

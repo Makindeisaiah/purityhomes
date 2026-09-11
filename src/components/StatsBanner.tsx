@@ -2,26 +2,26 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export const StatsBanner: React.FC = () => {
-  // 5 diverse professional partner headshots
+  // Diverse professional Nigerian leasing managers & client partners
   const partnerAvatars = [
     {
-      name: 'Michael Davis',
+      name: 'Chioma Adeyemi',
       img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80',
     },
     {
-      name: 'James Wilson',
+      name: 'Tunde Babalola',
       img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80',
     },
     {
-      name: 'Sarah Jenkins',
+      name: 'Folake Adeleke',
       img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80',
     },
     {
-      name: 'Marcus Chen',
+      name: 'Emeka Nwosu',
       img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80',
     },
     {
-      name: 'Robert Taylor',
+      name: 'Amina Danjuma',
       img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&h=150&q=80',
     },
   ];
@@ -98,7 +98,7 @@ export const StatsBanner: React.FC = () => {
 
               {/* Bottom-Right: Two Stat Blocks Side by Side with slight stagger */}
               <div className="flex items-center gap-8 sm:gap-14 md:gap-16 pb-1">
-                {/* Stat 1: 150+ Property Available */}
+                {/* Stat 1: 1,200+ Verified Rentals */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -107,14 +107,14 @@ export const StatsBanner: React.FC = () => {
                   className="flex flex-col"
                 >
                   <span className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-none drop-shadow-sm font-['Plus_Jakarta_Sans',sans-serif]">
-                    150+
+                    1,200+
                   </span>
                   <span className="mt-2 text-xs sm:text-sm font-medium text-white/90 tracking-normal drop-shadow-sm">
-                    Property Available
+                    Verified Nigerian Rentals
                   </span>
                 </motion.div>
 
-                {/* Stat 2: 87 Total Partner (staggered delay) */}
+                {/* Stat 2: 98% Verified Landlords (staggered delay) */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -123,10 +123,10 @@ export const StatsBanner: React.FC = () => {
                   className="flex flex-col"
                 >
                   <span className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-none drop-shadow-sm font-['Plus_Jakarta_Sans',sans-serif]">
-                    87
+                    98%
                   </span>
                   <span className="mt-2 text-xs sm:text-sm font-medium text-white/90 tracking-normal drop-shadow-sm">
-                    Total Partner
+                    Verified Landlords
                   </span>
                 </motion.div>
               </div>

@@ -1,125 +1,14 @@
-import React, { useState } from 'react';
-import { Heart, MapPin, Bed, Bath, Maximize, ChevronDown, Check, ArrowLeft, ArrowRight } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Heart, MapPin, Bed, Bath, Maximize, ChevronDown, Check, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-export interface PropertyCardData {
-  id: string;
-  name: string;
-  address: string;
-  price: string;
-  beds: number;
-  baths: number;
-  sqft: number;
-  image: string;
-  status?: string;
-}
+import { NIGERIAN_PROPERTIES } from '../data/nigerianProperties';
+import { NigerianProperty } from '../types';
+import { PropertyDetailModal } from './PropertyDetailModal';
 
 interface PropertyResultsGridProps {
   className?: string;
   totalProperties?: number;
 }
-
-const SAMPLE_PROPERTIES: PropertyCardData[] = [
-  {
-    id: 'prop-1',
-    name: 'Alexandria House',
-    address: '22037 Fig Tree Ln, Chatsworth, CA 91311',
-    price: '$450,000',
-    beds: 4,
-    baths: 4,
-    sqft: 2500,
-    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-2',
-    name: 'Lorenzo Apartment',
-    address: '8250 Lankershim, North Hollywood, CA 91605',
-    price: '$550,000',
-    beds: 3,
-    baths: 2,
-    sqft: 1800,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-3',
-    name: 'Golden Spring Villa',
-    address: '7401 Costello Ave, Van Nuys, CA 91311',
-    price: '$500,000',
-    beds: 4,
-    baths: 3,
-    sqft: 2400,
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-4',
-    name: 'Alexandria House',
-    address: '22037 Fig Tree Ln, Chatsworth, CA 91311',
-    price: '$450,000',
-    beds: 4,
-    baths: 4,
-    sqft: 2500,
-    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-5',
-    name: 'Lorenzo Apartment',
-    address: '8250 Lankershim, North Hollywood, CA 91605',
-    price: '$550,000',
-    beds: 3,
-    baths: 2,
-    sqft: 1800,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-6',
-    name: 'Golden Spring Villa',
-    address: '7401 Costello Ave, Van Nuys, CA 91311',
-    price: '$500,000',
-    beds: 4,
-    baths: 3,
-    sqft: 2400,
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-7',
-    name: 'Alexandria House',
-    address: '22037 Fig Tree Ln, Chatsworth, CA 91311',
-    price: '$450,000',
-    beds: 4,
-    baths: 4,
-    sqft: 2500,
-    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-8',
-    name: 'Lorenzo Apartment',
-    address: '8250 Lankershim, North Hollywood, CA 91605',
-    price: '$550,000',
-    beds: 3,
-    baths: 2,
-    sqft: 1800,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-  {
-    id: 'prop-9',
-    name: 'Golden Spring Villa',
-    address: '7401 Costello Ave, Van Nuys, CA 91311',
-    price: '$500,000',
-    beds: 4,
-    baths: 3,
-    sqft: 2400,
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80',
-    status: 'For Sale',
-  },
-];
 
 const SORT_OPTIONS = [
   'Newest First',
@@ -137,6 +26,7 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
   const [selectedSort, setSelectedSort] = useState('Newest First');
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProperty, setSelectedProperty] = useState<NigerianProperty | null>(null);
 
   const toggleSaveProperty = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -144,6 +34,18 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
+
+  const sortedProperties = useMemo(() => {
+    const list = [...NIGERIAN_PROPERTIES];
+    if (selectedSort === 'Price: Low to High') {
+      list.sort((a, b) => a.pricePerYear - b.pricePerYear);
+    } else if (selectedSort === 'Price: High to Low') {
+      list.sort((a, b) => b.pricePerYear - a.pricePerYear);
+    } else if (selectedSort === 'Largest Area') {
+      list.sort((a, b) => b.sqft - a.sqft);
+    }
+    return list;
+  }, [selectedSort]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -164,7 +66,7 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
         className="flex flex-row items-center justify-between gap-4 mb-6 sm:mb-8"
       >
         <p className="text-sm sm:text-base font-semibold text-neutral-700 font-['Plus_Jakarta_Sans',sans-serif]">
-          Showing 1-9 of {totalProperties}+ properties
+          Showing 1-9 of {totalProperties}+ verified Nigerian rentals
         </p>
 
         {/* Sort By Dropdown */}
@@ -225,13 +127,14 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
 
       {/* 2. 3-Column Property Card Grid (Responsive to 2 cols on tablet / 1 col on mobile) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
-        {SAMPLE_PROPERTIES.map((property, index) => {
+        {sortedProperties.map((property, index) => {
           const isSaved = savedPropertyIds.includes(property.id);
 
           return (
             <motion.div
               key={`${property.id}-${index}`}
-              id={`property-item-${property.id}-${index}`}
+              id={`property-item-${property.id}`}
+              onClick={() => setSelectedProperty(property)}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -240,23 +143,23 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
                 delay: index * 0.08,
                 ease: 'easeOut',
               }}
-              whileHover={{ y: -4 }}
-              className="bg-white rounded-2xl sm:rounded-[1.25rem] border border-neutral-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col group cursor-pointer"
+              whileHover={{ y: -5 }}
+              className="bg-white rounded-2xl sm:rounded-[1.35rem] border border-neutral-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-lg hover:border-[#5dbd8c]/40 transition-all duration-200 flex flex-col group cursor-pointer"
             >
               {/* Photo Container */}
               <div className="relative w-full aspect-[16/11] sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-neutral-100 mb-3.5">
                 <motion.img
                   src={property.image}
                   alt={property.name}
-                  whileHover={{ scale: 1.03 }}
+                  whileHover={{ scale: 1.04 }}
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                   className="w-full h-full object-cover object-center"
                   referrerPolicy="no-referrer"
                 />
 
-                {/* Top-Left: "For Sale" Green Rounded Badge */}
-                <div className="absolute top-3 left-3 bg-[#5dbd8c] text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-md sm:rounded-lg shadow-sm pointer-events-none">
-                  {property.status || 'For Sale'}
+                {/* Top-Left: "For Rent / Serviced" Green Rounded Badge */}
+                <div className="absolute top-3 left-3 bg-[#4cb882] text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-md sm:rounded-lg shadow-sm pointer-events-none">
+                  {property.status || 'For Rent'}
                 </div>
 
                 {/* Top-Right: Heart/Save Toggle Icon */}
@@ -266,7 +169,7 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
                   onClick={(e) => toggleSaveProperty(property.id, e)}
                   whileTap={{ scale: 1.3 }}
                   aria-label={isSaved ? 'Unsave property' : 'Save property'}
-                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/25 backdrop-blur-xs flex items-center justify-center text-white hover:bg-black/40 transition-colors cursor-pointer"
+                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/35 backdrop-blur-xs flex items-center justify-center text-white hover:bg-black/50 transition-colors cursor-pointer"
                 >
                   <Heart
                     className={`w-4 h-4 transition-colors stroke-[2.2] ${
@@ -278,24 +181,37 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
 
               {/* Property Details */}
               <div className="flex flex-col flex-1">
-                {/* Price in Bold Green */}
-                <span className="text-lg sm:text-xl font-extrabold text-[#5dbd8c] tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
-                  {property.price}
-                </span>
+                {/* Price in Bold Green with Naira Symbol (₦) */}
+                <div className="flex items-baseline justify-between">
+                  <span className="text-lg sm:text-xl font-extrabold text-[#4cb882] tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                    {property.priceFormatted}
+                  </span>
+                  {property.verifiedLandlord && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2d7752] bg-[#4cb882]/10 px-2 py-0.5 rounded-full">
+                      <ShieldCheck className="w-3 h-3 text-[#4cb882]" />
+                      Verified
+                    </span>
+                  )}
+                </div>
 
                 {/* Property Name in Bold Black */}
-                <h4 className="text-base sm:text-[17px] font-bold text-neutral-950 mt-0.5 tracking-tight group-hover:text-[#4cb882] transition-colors line-clamp-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                <h4 className="text-base sm:text-[17px] font-bold text-neutral-950 mt-1 tracking-tight group-hover:text-[#4cb882] transition-colors line-clamp-1 font-['Plus_Jakarta_Sans',sans-serif]">
                   {property.name}
                 </h4>
 
                 {/* Address with Pin Icon (Wraps cleanly) */}
                 <div className="flex items-start gap-1.5 mt-1.5 text-neutral-500 text-xs sm:text-[13px] font-medium leading-snug min-h-[36px]">
-                  <MapPin className="w-3.5 h-3.5 text-[#5dbd8c] shrink-0 mt-0.5" />
+                  <MapPin className="w-3.5 h-3.5 text-[#4cb882] shrink-0 mt-0.5" />
                   <span className="line-clamp-2">{property.address}</span>
                 </div>
 
+                {/* Power supply indicator tag */}
+                <div className="mt-2 text-[11px] text-neutral-600 font-medium bg-neutral-100 rounded-md px-2 py-1 line-clamp-1">
+                  ⚡ {property.powerSupply}
+                </div>
+
                 {/* Divider */}
-                <div className="w-full h-px bg-neutral-100 my-3.5" />
+                <div className="w-full h-px bg-neutral-100 my-3" />
 
                 {/* Bottom Row: Icons + Text (Evenly Spaced) */}
                 <div className="flex items-center justify-between text-neutral-600 text-xs sm:text-[13px] font-medium pt-0.5">
@@ -440,6 +356,13 @@ export const PropertyResultsGrid: React.FC<PropertyResultsGridProps> = ({
           <ArrowRight className="w-4 h-4" />
         </motion.button>
       </div>
+
+      {/* Property Detail Modal */}
+      <PropertyDetailModal
+        property={selectedProperty}
+        isOpen={!!selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+      />
     </div>
   );
 };

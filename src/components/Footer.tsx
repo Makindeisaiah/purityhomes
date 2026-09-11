@@ -42,14 +42,14 @@ export const Footer: React.FC = () => {
         {/* Top CTA area */}
         <div className="mb-12 sm:mb-16">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-            Interested To Build Your Home?
+            Interested in Renting or Listing an Apartment in Nigeria?
           </h3>
           <a
-            href="mailto:contact@purityhomes.com"
+            href="mailto:rentals@purityhomes.ng"
             id="footer-email-link"
             className="inline-block mt-3 text-lg sm:text-2xl font-bold text-white underline underline-offset-8 decoration-2 hover:text-[#4cb882] transition-colors"
           >
-            contact@purityhomes.com
+            rentals@purityhomes.ng
           </a>
         </div>
 
@@ -69,6 +69,9 @@ export const Footer: React.FC = () => {
                 Homes
               </span>
             </div>
+            <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
+              Nigeria's most reliable apartment and home rental network. Verified landlords, transparent service charges, and escrow caution fee protection.
+            </p>
 
             {/* Contact Rows with Icons */}
             <div className="flex flex-col space-y-4 pt-1">
@@ -83,19 +86,19 @@ export const Footer: React.FC = () => {
                 <div className="w-6 h-6 flex items-center justify-center">
                   <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </div>
-                <span>Purityhomes</span>
+                <span>@purityhomesng</span>
               </a>
 
               {/* Phone */}
               <a
-                href="tel:+17203659867"
+                href="tel:+2348038924511"
                 id="footer-contact-phone"
                 className="flex items-center gap-3 text-white/95 hover:text-[#4cb882] text-sm font-semibold transition-colors group"
               >
                 <div className="w-6 h-6 flex items-center justify-center">
                   <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </div>
-                <span>+1 720-365-9867</span>
+                <span>+234 (0) 803 892 4511 / +234 902 114 7720</span>
               </a>
 
               {/* X / Twitter */}
@@ -109,7 +112,7 @@ export const Footer: React.FC = () => {
                 <div className="w-6 h-6 flex items-center justify-center font-bold text-base">
                   <span className="group-hover:scale-110 transition-transform">𝕏</span>
                 </div>
-                <span>Purityhomes</span>
+                <span>@purityhomesng</span>
               </a>
             </div>
           </div>

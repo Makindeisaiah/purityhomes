@@ -30,29 +30,31 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({
 
   const propertyTypes = [
     'All Types',
-    'Modern Villa',
-    'Luxury Apartment',
-    'Penthouse Suite',
-    'Waterfront Mansion',
-    'Townhouse',
+    'Serviced Flat',
+    'Mini Flat / 1-Bed',
+    '2-Bedroom Flat',
+    '3-Bedroom Luxury Flat',
+    'Terrace Duplex',
+    'Detached Mansion',
+    'Waterfront Penthouse',
   ];
 
   const minPriceOptions = [
     'No Min',
-    '$300,000',
-    '$450,000',
-    '$550,000',
-    '$700,000',
-    '$1,000,000',
+    '₦2,000,000',
+    '₦4,000,000',
+    '₦8,000,000',
+    '₦15,000,000',
+    '₦30,000,000',
   ];
 
   const maxPriceOptions = [
     'No Max',
-    '$500,000',
-    '$650,000',
-    '$850,000',
-    '$1,200,000',
-    '$2,000,000+',
+    '₦5,000,000',
+    '₦10,000,000',
+    '₦20,000,000',
+    '₦40,000,000',
+    '₦70,000,000+',
   ];
 
   // Close dropdowns on outside click
@@ -98,7 +100,10 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({
               <h1 className="text-4xl sm:text-5xl md:text-[54px] lg:text-[58px] font-extrabold leading-[1.12] tracking-[-0.03em] text-neutral-950 font-['Plus_Jakarta_Sans',sans-serif]">
                 <span>Find Your Perfect</span>
                 <br />
-                <span className="text-[#5dbd8c]">Residence</span>
+                <span className="text-[#5dbd8c]">Rental Residence</span>
+                <span className="text-neutral-950 text-2xl sm:text-3xl block font-bold text-neutral-500 mt-2 font-['Plus_Jakarta_Sans',sans-serif]">
+                  Across Nigeria
+                </span>
               </h1>
 
               {/* Breadcrumb Row: Home > Property */}
@@ -158,7 +163,7 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                  placeholder="Search by location, property or address..."
+                  placeholder="Search by Nigerian city, neighborhood or street... (e.g. Lekki, Ikoyi, Maitama)"
                   className="w-full bg-transparent text-sm sm:text-[15px] font-medium text-neutral-800 placeholder:text-neutral-400 focus:outline-none pr-2"
                 />
                 <button

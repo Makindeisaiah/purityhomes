@@ -13,39 +13,39 @@ interface Testimonial {
 export const Testimonials: React.FC = () => {
   const testimonials: Testimonial[] = [
     {
-      id: 'alexis-terry',
-      name: 'Alexis Terry',
-      role: 'Old Buyer',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80',
-      text: 'Buying my first home felt overwhelming, but Purity Homes made it an enjoyable experience. They took the time to explain everything and provided fantastic insights into different neighborhoods. Their patience and dedication were key in helping me find a place that truly felt like home. I highly recommend Purity Homes to anyone looking to buy!',
-    },
-    {
-      id: 'john-chris',
-      name: 'John Chris',
-      role: 'Old Buyer',
+      id: 'chinedu-okafor',
+      name: 'Chinedu Okafor',
+      role: 'Tenant in Lekki Phase 1',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80',
-      text: 'I can’t thank Purity Homes enough for helping me find my dream home! From our first meeting, they listened to my needs and preferences, guiding me through every step of the process. Their knowledge of the local market was invaluable, and they were always available to answer my questions. Thanks to Purity Homes, I found a perfect home that exceeded my expectations!',
+      text: 'Renting in Lagos used to be stressful with middleman agent fees. Purity Homes verified the landlord, handled the tenancy contract cleanly, and the guaranteed 24/7 power in Lekki Phase 1 has been 100% reliable for my remote tech job.',
     },
     {
-      id: 'michael-jordan',
-      name: 'Michael Jordan',
-      role: 'Old Buyer',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80',
-      text: 'Purity Homes was a fantastic partner in my home-buying journey. Their attention to detail and commitment to understanding my needs made all the difference. They negotiated fiercely on my behalf and ensured I got the best deal possible. I’m thrilled with my new home and grateful for the support and expertise Purity Homes provided throughout the process!',
-    },
-    {
-      id: 'sarah-jenkins',
-      name: 'Sarah Jenkins',
-      role: 'Old Buyer',
+      id: 'fatima-aliyu',
+      name: 'Fatima Aliyu',
+      role: 'Tenant in Maitama, Abuja',
       avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80',
-      text: 'The transparency and responsiveness from Purity Homes made all the difference. Every detail was handled with precision and care, making the closing seamless and effortless.',
+      text: 'Relocating to Abuja was seamless thanks to Purity Homes. The video walkthrough matched the property in Maitama down to the kitchen finishes. Honest service charge breakdown with no hidden surprises.',
     },
     {
-      id: 'david-kim',
-      name: 'David Kim',
-      role: 'Old Buyer',
+      id: 'babatunde-johnson',
+      name: 'Babatunde Johnson',
+      role: 'Tenant in Victoria Island',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80',
+      text: 'Secured a 2-bedroom serviced flat within 48 hours of physical inspection. The digital receipt, caution fee escrow protection, and prompt key collection made this the best rental experience I have had in Lagos.',
+    },
+    {
+      id: 'grace-danladi',
+      name: 'Grace Danladi',
+      role: 'Tenant in Ikeja GRA',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80',
+      text: 'The transparency and responsiveness from Purity Homes made all the difference. Every detail was handled with precision and care, making the moving-in process seamless and effortless.',
+    },
+    {
+      id: 'david-okeke',
+      name: 'David Okeke',
+      role: 'Tenant in Banana Island',
       avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&h=150&q=80',
-      text: 'Finding a contemporary residence with top-tier amenities in our price bracket felt impossible until we connected with Purity Homes. Exceptional team and service!',
+      text: 'Finding a contemporary penthouse residence with dedicated gym and backup generator in our price bracket was smooth. Exceptional team and service in Nigeria!',
     },
   ];
 
@@ -86,11 +86,11 @@ export const Testimonials: React.FC = () => {
           className="text-center max-w-4xl mx-auto mb-12 sm:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold text-neutral-950 leading-[1.18] tracking-[-0.02em] font-['Plus_Jakarta_Sans',sans-serif]">
-            <span>See Other People </span>
-            <span className="text-[#4cb882]">Who Have</span>
+            <span>See What Verified </span>
+            <span className="text-[#4cb882]">Tenants Say</span>
             <br />
-            <span className="text-[#4cb882]">Bought </span>
-            <span>Our Apartment</span>
+            <span>About </span>
+            <span className="text-[#4cb882]">Renting With Us</span>
           </h2>
         </motion.div>
 

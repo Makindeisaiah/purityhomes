@@ -25,7 +25,7 @@ export const InteriorShowcase: React.FC = () => {
             <span>with stunning view</span>
           </h2>
           <p className="mt-3 text-neutral-500 text-sm sm:text-base max-w-xl mx-auto">
-            Experience our flagship luxury apartment walkthrough and architectural tour.
+            Experience our flagship luxury serviced apartment walkthrough in Victoria Island & Ikoyi, Lagos.
           </p>
         </motion.div>
 
@@ -51,7 +51,7 @@ export const InteriorShowcase: React.FC = () => {
           <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 pointer-events-none">
             <span className="w-2.5 h-2.5 rounded-full bg-[#4cb882] animate-pulse" />
             <div className="flex flex-col">
-              <span className="text-white text-xs font-bold tracking-wide">Purity Homes • Luxury Apartment Walkthrough Tour</span>
+              <span className="text-white text-xs font-bold tracking-wide">Purity Homes Nigeria • Luxury Serviced Walkthrough Tour</span>
             </div>
           </div>
         </motion.div>
